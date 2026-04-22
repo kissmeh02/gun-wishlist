@@ -16,6 +16,10 @@ npm test
 npx --yes http-server -p 8080 .
 ```
 
+## GitHub Pages
+
+The repository is **private**; a free plan often **cannot** enable GitHub Pages for private repositories (the API may return 422). Options: [upgrade the account](https://github.com/pricing) for private Pages, **make the repository public** to use free Pages, or host the `static-site` **workflow artifact** (from the “Site build and verify” action) on Netlify, Cloudflare Pages, or S3+CloudFront.
+
 ## Security
 
 See [SECURITY.md](SECURITY.md). This project has no server or database; treat any future API keys and DB URLs as production secrets (e.g. Google Secret Manager, GitHub Environments) and never commit them.

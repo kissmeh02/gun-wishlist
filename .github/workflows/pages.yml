@@ -1,21 +1,20 @@
-name: GitHub Pages
+# GitHub Pages product deploy requires a plan that supports Pages for this repo
+# (private repos often need GitHub Pro, or use a public repo for free Pages).
+# This job still builds the site, verifies a 200 response, and uploads _site/ as an artifact.
+
+name: Site build and verify
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
-  group: pages
+  group: site-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-smoke:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,35 +30,16 @@ jobs:
         run: npm run site:build
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
-      - name: Verify public URL
-        if: success()
+      - name: Local HTTP 200 (smoke)
         run: |
-          u="${{ steps.deployment.outputs.page_url }}"
-          if [ -z "$u" ]; then
-            echo "No page_url output"
-            exit 1
-          fi
-          echo "PAGE_URL=$u"
-          for i in 1 2 3 4 5 6 7 8 9 10; do
-            code=$(curl -sS -o /dev/null -w "%{http_code}" -L "$u" || true)
-            if [ "$code" = "200" ]; then
-              echo "OK HTTP $code"
-              exit 0
-            fi
-            echo "Got $code, retrying..."
-            sleep 8
-          done
-          exit 1
+          npx --yes http-server _site -p 9999 -s &
+          sleep 2
+          code=$(curl -sS -o /dev/null -w "%{http_code}" "http://127.0.0.1:9999/")
+          if [ "$code" != "200" ]; then echo "expected 200, got $code"; exit 1; fi
+          echo "OK: root returns HTTP $code"
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-site
+          path: _site
+          if-no-files-found: error

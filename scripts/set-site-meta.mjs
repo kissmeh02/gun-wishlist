@@ -17,7 +17,9 @@ cpSync(join(root, 'src'), join(outDir, 'src'), { recursive: true });
 
 const indexPath = join(root, 'index.html');
 let html = readFileSync(indexPath, 'utf8');
-html = html.replaceAll('OG_SITE_BASE_URL', siteBase);
+if (html.includes('OG_SITE_BASE_URL')) {
+  html = html.replaceAll('OG_SITE_BASE_URL', siteBase);
+}
 writeFileSync(join(outDir, 'index.html'), html, 'utf8');
 
 process.stdout.write(`Site assembled at ${outDir}\npublic URL: ${siteBase}\n`);
