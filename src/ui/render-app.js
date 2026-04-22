@@ -111,11 +111,14 @@ export function renderApp(
     const tdTags = document.createElement('td');
     tdTags.className = 'td-tags';
     setLabel(tdTags, 'Tags');
-    if (g.nfa) tdTags.appendChild(makeBadge('NFA', 'b-nfa'));
-    if (g.hist) tdTags.appendChild(makeBadge('Historic', 'b-hist'));
-    if (g.mil) tdTags.appendChild(makeBadge('Military', 'b-mil'));
-    if (g.isCustom) tdTags.appendChild(makeBadge('Custom', 'b-custom'));
-    if (acquired.has(rowKey)) tdTags.appendChild(makeBadge('Acquired', 'b-got'));
+    const tagsInner = document.createElement('div');
+    tagsInner.className = 'td-tags-inner';
+    if (g.nfa) tagsInner.appendChild(makeBadge('NFA', 'b-nfa'));
+    if (g.hist) tagsInner.appendChild(makeBadge('Historic', 'b-hist'));
+    if (g.mil) tagsInner.appendChild(makeBadge('Military', 'b-mil'));
+    if (g.isCustom) tagsInner.appendChild(makeBadge('Custom', 'b-custom'));
+    if (acquired.has(rowKey)) tagsInner.appendChild(makeBadge('Acquired', 'b-got'));
+    tdTags.appendChild(tagsInner);
 
     const tdPrice = document.createElement('td');
     tdPrice.className = 'td-price td-num';

@@ -632,7 +632,7 @@ details[open].panel .panel__summary::after {
   width: 6%;
 }
 .data-table col.col-tags {
-  width: 9%;
+  width: 12%;
 }
 .data-table col.col-price {
   width: 6%;
@@ -644,7 +644,7 @@ details[open].panel .panel__summary::after {
   width: 5%;
 }
 .data-table col.col-note {
-  width: 30%;
+  width: 27%;
 }
 .data-table col.col-action {
   width: 3.5rem;
@@ -767,12 +767,31 @@ details[open].panel .panel__summary::after {
   font-size: 0.8rem;
 }
 
+/* Keep td as table-cell; flex on <td> breaks col alignment with colgroup + table-layout:fixed */
+.data-table th.th-tags {
+  text-align: left;
+  vertical-align: bottom;
+  /* Match body cell horizontal padding so label lines up with badge column */
+  padding-left: 0.5rem;
+  padding-right: 0.45rem;
+}
+
 .td-tags {
+  text-align: left;
+  vertical-align: middle;
+  white-space: normal;
+  min-width: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.45rem;
+}
+
+.td-tags-inner {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
   align-items: center;
-  white-space: normal;
+  align-content: center;
+  justify-content: flex-start;
   min-width: 0;
 }
 
