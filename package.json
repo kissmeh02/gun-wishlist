@@ -7,7 +7,9 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "site:build": "node scripts/set-site-meta.mjs"
+    "site:build": "node scripts/set-site-meta.mjs",
+    "dev": "npx --yes serve -l 5173 --no-port-switching .",
+    "preview:site": "npx --yes serve -l 4173 --no-port-switching _site"
   },
   "devDependencies": {
     "vitest": "^3.0.0"
