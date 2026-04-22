@@ -9,6 +9,8 @@ import { submachineGunsNfa } from './submachine-guns-nfa.js';
 import { machineGunsNfa } from './machine-guns-nfa.js';
 import { historicCollector } from './historic-collector.js';
 import { modernMilitaryStyle } from './modern-military-style.js';
+import { contemporaryPicks2026 } from './contemporary-picks-2026.js';
+import { militaryDutyReference } from './military-duty-reference.js';
 
 /** @type {import('../types.js').GunRow[]} */
 export const allCatalogRows = [
@@ -23,6 +25,8 @@ export const allCatalogRows = [
   ...machineGunsNfa,
   ...historicCollector,
   ...modernMilitaryStyle,
+  ...contemporaryPicks2026,
+  ...militaryDutyReference,
 ];
 
 export {
@@ -37,4 +41,6 @@ export {
   machineGunsNfa,
   historicCollector,
   modernMilitaryStyle,
+  contemporaryPicks2026,
+  militaryDutyReference,
 };

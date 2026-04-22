@@ -1,3 +1,4 @@
+import { getRowKey } from '../lib/gun-key.js';
 import { filterGuns } from '../lib/filter-guns.js';
 import { buildStatsModel } from '../lib/build-stats.js';
 
@@ -8,7 +9,8 @@ import { buildStatsModel } from '../lib/build-stats.js';
  * @param {Set<string>} acquired
  * @param {HTMLElement} statsEl
  * @param {HTMLTableSectionElement} tbody
- * @param {(name: string, checked: boolean) => void} onToggle
+ * @param {(rowKey: string, checked: boolean) => void} onToggle
+ * @param {(id: string) => void} [onDeleteCustom]
  */
 export function renderApp(
   allGuns,
@@ -17,7 +19,8 @@ export function renderApp(
   acquired,
   statsEl,
   tbody,
-  onToggle
+  onToggle,
+  onDeleteCustom
 ) {
   const filtered = filterGuns(allGuns, filterState, searchText);
   const m = buildStatsModel(filtered, allGuns, acquired);
@@ -50,19 +53,20 @@ export function renderApp(
       const hr = document.createElement('tr');
       hr.className = 'cat-head';
       const td = document.createElement('td');
-      td.colSpan = 5;
+      td.colSpan = 6;
       td.textContent = g.cat;
       hr.appendChild(td);
       tbody.appendChild(hr);
       lastCat = g.cat;
     }
+    const rowKey = getRowKey(g);
     const tr = document.createElement('tr');
     const td0 = document.createElement('td');
     const input = document.createElement('input');
     input.type = 'checkbox';
-    if (acquired.has(g.n)) input.checked = true;
+    if (acquired.has(rowKey)) input.checked = true;
     input.addEventListener('change', () => {
-      onToggle(g.n, input.checked);
+      onToggle(rowKey, input.checked);
     });
     td0.appendChild(input);
 
@@ -78,13 +82,27 @@ export function renderApp(
     if (g.nfa) tdTags.appendChild(makeBadge('NFA', 'b-nfa'));
     if (g.hist) tdTags.appendChild(makeBadge('Historic', 'b-hist'));
     if (g.mil) tdTags.appendChild(makeBadge('Military', 'b-mil'));
-    if (acquired.has(g.n)) tdTags.appendChild(makeBadge('Acquired', 'b-got'));
+    if (g.isCustom) tdTags.appendChild(makeBadge('Custom', 'b-custom'));
+    if (acquired.has(rowKey)) tdTags.appendChild(makeBadge('Acquired', 'b-got'));
 
     const tdNote = document.createElement('td');
     tdNote.className = 'note';
     tdNote.textContent = g.note || '';
 
-    tr.append(td0, tdName, tdCal, tdTags, tdNote);
+    const tdAction = document.createElement('td');
+    tdAction.className = 'td-action';
+    if (g.isCustom && g.id && onDeleteCustom) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn-row-delete';
+      btn.textContent = 'Remove';
+      btn.addEventListener('click', () => onDeleteCustom(g.id));
+      tdAction.appendChild(btn);
+    } else {
+      tdAction.appendChild(document.createTextNode(''));
+    }
+
+    tr.append(td0, tdName, tdCal, tdTags, tdNote, tdAction);
     tbody.appendChild(tr);
   }
 }

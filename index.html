@@ -22,6 +22,59 @@
   </head>
   <body>
     <h1>Gun Collection — Texas Build</h1>
+    <p class="subhead" id="catalog-dates"></p>
+
+    <section class="add-gun" aria-label="Add wishlist item">
+      <h2 class="h2-sec">Add a wishlist item</h2>
+      <form id="add-gun-form" class="add-gun-form">
+        <div class="add-gun-row">
+          <label class="add-label"
+            >Name <input name="n" type="text" required maxlength="200" />
+          </label>
+        </div>
+        <div class="add-gun-row add-gun-grid">
+          <label class="add-label"
+            >Caliber
+            <input name="cal" type="text" maxlength="80" placeholder="9mm" />
+          </label>
+          <label class="add-label"
+            >Category
+            <input
+              name="cat"
+              type="text"
+              list="add-cat-dl"
+              maxlength="100"
+              placeholder="e.g. Handguns"
+            />
+          </label>
+        </div>
+        <datalist id="add-cat-dl"></datalist>
+        <div class="add-gun-row add-checks">
+          <label
+            ><input name="nfa" type="checkbox" /> <span>NFA (suppressor, SBR, etc.)</span></label
+          >
+          <label
+            ><input name="mil" type="checkbox" />
+            <span>Military / duty style</span></label
+          >
+        </div>
+        <div class="add-gun-row">
+          <label class="add-label"
+            >Notes
+            <textarea
+              name="note"
+              rows="2"
+              maxlength="2000"
+              placeholder="Optic, SBR, import notes, etc."
+            ></textarea>
+          </label>
+        </div>
+        <div class="add-gun-row">
+          <button type="submit" class="btn-add">Add to list</button>
+        </div>
+      </form>
+    </section>
+
     <div class="controls">
       <select id="catFilter">
         <option value="">All categories</option>
@@ -48,6 +101,7 @@
             <th>Caliber</th>
             <th>Tags</th>
             <th>Notes</th>
+            <th class="th-action"> </th>
           </tr>
         </thead>
         <tbody id="tbody"></tbody>

@@ -1,3 +1,5 @@
+import { getRowKey } from './gun-key.js';
+
 const STORAGE_KEY = 'gunAcq';
 
 /**
@@ -17,12 +19,12 @@ export function loadAcquiredNames() {
 }
 
 /**
- * @param {string[]} names
+ * @param {string[]} keys
  */
-export function saveAcquiredNames(names) {
+export function saveAcquiredNames(keys) {
   try {
     if (typeof localStorage === 'undefined') return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(names));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
   } catch (err) {
     console.error('saveAcquiredNames failed', err);
   }
@@ -30,14 +32,14 @@ export function saveAcquiredNames(names) {
 
 /**
  * @param {import('../data/types.js').GunRow[]} allGuns
- * @param {string[]} names
+ * @param {string[]} rawKeys
  * @returns {Set<string>}
  */
-export function toAcquiredSet(allGuns, names) {
-  const valid = new Set(allGuns.map((g) => g.n));
+export function toAcquiredSet(allGuns, rawKeys) {
+  const keySet = new Set(allGuns.map((g) => getRowKey(g)));
   const s = new Set();
-  for (const n of names) {
-    if (valid.has(n)) s.add(n);
+  for (const k of rawKeys) {
+    if (keySet.has(k)) s.add(k);
   }
   return s;
 }

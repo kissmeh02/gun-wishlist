@@ -14,8 +14,109 @@ body {
 h1 {
   font-size: 1.4rem;
   font-weight: 500;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.35rem;
   color: #fff;
+}
+
+.subhead {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 1.25rem;
+}
+
+.h2-sec {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ccc;
+  margin-bottom: 0.65rem;
+}
+
+.add-gun {
+  background: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 1rem;
+}
+
+.add-gun-form .add-gun-row {
+  margin-bottom: 0.5rem;
+}
+
+.add-gun-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.add-gun-form input[type='text'],
+.add-gun-form textarea {
+  width: 100%;
+  max-width: 420px;
+  margin-top: 4px;
+  padding: 6px 8px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #e8e8e8;
+  font-family: inherit;
+}
+
+.add-gun-form textarea {
+  max-width: 560px;
+  resize: vertical;
+}
+
+.add-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+.add-checks input {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.btn-add,
+.btn-row-delete {
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #252525;
+  color: #e8e8e8;
+  cursor: pointer;
+}
+
+.btn-add {
+  background: #1a3d2a;
+  border-color: #2a6a4a;
+}
+
+.btn-add:hover {
+  background: #234d34;
+}
+
+.btn-row-delete {
+  padding: 2px 8px;
+  font-size: 11px;
+  background: #2a1a1a;
+  border-color: #4a2a2a;
+  color: #e8a0a0;
+}
+
+.btn-row-delete:hover {
+  background: #3a1a1a;
+}
+
+.td-action {
+  vertical-align: middle;
+  text-align: right;
+  width: 72px;
 }
 
 .page-footer {
@@ -149,6 +250,11 @@ tr:hover td {
 .b-got {
   background: #0a2820;
   color: #5dcaa5;
+}
+
+.b-custom {
+  background: #2a2a0a;
+  color: #d4c97a;
 }
 
 input[type='checkbox'] {

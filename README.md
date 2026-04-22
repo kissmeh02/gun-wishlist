@@ -3,6 +3,7 @@
 A static, client-only gun collection wishlist: browse by category, filter NFA and standard items, search by name or caliber, and mark acquisitions stored in the browser (local storage).
 
 - **Source:** modular ES modules under `src/` (data, lib, UI).
+- **Custom wishlist items:** add via the form on the page; they are stored in the browser with key `gunCustom` (acquired still uses `gunAcq`). Remove with the row **Remove** button.
 - **Notion link:** set `NOTION_DOCS_URL` in [`src/config.js`](src/config.js), then use the footer link to open your Notion page.
 - **Open Graph** `og:url` in `index.html` points at the project Pages URL; `npm run site:build` can still rewrite a placeholder if you use `OG_SITE_BASE_URL` in a fork.
 - **Tests:** `npm test`
