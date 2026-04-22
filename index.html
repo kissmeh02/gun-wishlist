@@ -8,6 +8,9 @@
       name="description"
       content="Texas build wishlist: track a firearms collection with categories, NFA flags, and local progress."
     />
+    <meta name="theme-color" content="#0f0f0f" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles/main.css" />
     <meta property="og:title" content="Gun Collection Tracker" />
     <meta
@@ -76,10 +79,10 @@
     </section>
 
     <div class="controls">
-      <select id="catFilter">
+      <select id="catFilter" aria-label="Filter by category">
         <option value="">All categories</option>
       </select>
-      <select id="nfaFilter">
+      <select id="nfaFilter" aria-label="NFA filter">
         <option value="">All items</option>
         <option value="nfa">NFA items only</option>
         <option value="standard">Standard (no NFA)</option>
@@ -89,8 +92,27 @@
         type="search"
         placeholder="Search name or caliber..."
         autocomplete="off"
+        aria-label="Search"
       />
     </div>
+    <p class="tools" role="group" aria-label="Backup and link tools">
+      <button type="button" id="copy-view-link" class="btn-tool">
+        Copy view link
+      </button>
+      <span class="copy-feedback" id="copy-feedback" role="status" aria-live="polite"></span>
+      <button type="button" id="export-backup" class="btn-tool">Download backup (JSON)</button>
+      <button type="button" id="import-backup" class="btn-tool">Import backup</button>
+      <input
+        id="import-backup-file"
+        type="file"
+        accept="application/json,.json"
+        hidden
+        title="Select backup JSON"
+      />
+      <span class="tools-hint"
+        >Share links keep category, NFA filter, and search. Backup saves custom items and checkmarks.</span
+      >
+    </p>
     <div class="stats" id="stats"></div>
     <div style="overflow-x: auto">
       <table>

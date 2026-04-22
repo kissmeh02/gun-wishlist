@@ -17,4 +17,13 @@
  * @property {''|'nfa'|'standard'} nfa
  */
 
+/**
+ * @typedef {Object} BackupV1
+ * @property {1} v
+ * @property {string} [app]
+ * @property {string} [exportedAt]
+ * @property {GunRow[]} customGuns
+ * @property {string[]} acquiredKeys
+ */
+
 export {};

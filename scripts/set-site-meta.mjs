@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, cpSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, cpSync, copyFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const repo = process.env.GITHUB_REPOSITORY || '';
@@ -14,6 +14,11 @@ if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
 const root = process.cwd();
 cpSync(join(root, 'styles'), join(outDir, 'styles'), { recursive: true });
 cpSync(join(root, 'src'), join(outDir, 'src'), { recursive: true });
+const man = join(root, 'manifest.json');
+const ico = join(root, 'icon.svg');
+if (existsSync(man)) copyFileSync(man, join(outDir, 'manifest.json'));
+if (existsSync(ico)) copyFileSync(ico, join(outDir, 'icon.svg'));
+writeFileSync(join(outDir, '.nojekyll'), '');
 
 const indexPath = join(root, 'index.html');
 let html = readFileSync(indexPath, 'utf8');

@@ -1,6 +1,8 @@
 import { mergeStaticAndCustom } from './data/merge-guns.js';
 import { NOTION_DOCS_URL, CATALOG_REFRESH_DATE } from './config.js';
 import { getRowKey } from './lib/gun-key.js';
+import { debounce } from './lib/debounce.js';
+import { readUrlFilterParams, isValidNfaParam, buildListUrl } from './lib/url-filters.js';
 import {
   loadAcquiredNames,
   saveAcquiredNames,
@@ -14,13 +16,14 @@ import {
 import { initControls, syncCategoryOptions } from './ui/init-controls.js';
 import { initAddItemForm, syncCategoryDatalist } from './ui/add-item-form.js';
 import { renderApp } from './ui/render-app.js';
+import { initBackupControls } from './ui/backup-controls.js';
+import { initShareLink } from './ui/share-link.js';
 
 let customGuns = loadCustomGuns();
 let allGuns = mergeStaticAndCustom(customGuns);
 let acquired = toAcquiredSet(allGuns, loadAcquiredNames());
 
 /**
- * Remove acquired keys that no longer exist in the list.
  * @param {Set<string>} set
  * @param {import('./data/types.js').GunRow[]} guns
  */
@@ -50,6 +53,33 @@ function getFilterState() {
 function getSearchText() {
   const el = document.getElementById('search');
   return el?.value ?? '';
+}
+
+const updateUrlInAddressBar = debounce(() => {
+  const catF = document.getElementById('catFilter');
+  const nfaF = document.getElementById('nfaFilter');
+  const next = buildListUrl(
+    window.location.pathname,
+    catF?.value ?? '',
+    nfaF?.value ?? '',
+    getSearchText()
+  );
+  if (next !== window.location.pathname + window.location.search) {
+    history.replaceState(null, '', next);
+  }
+}, 400);
+
+function applyUrlToForm() {
+  const { cat, nfa, q } = readUrlFilterParams();
+  const catF = document.getElementById('catFilter');
+  const nfaF = document.getElementById('nfaFilter');
+  const sEl = document.getElementById('search');
+  const cats = new Set(allGuns.map((g) => g.cat));
+  if (catF) {
+    if (cat && cats.has(cat)) catF.value = cat;
+  }
+  if (nfaF && isValidNfaParam(nfa)) nfaF.value = nfa;
+  if (sEl) sEl.value = q;
 }
 
 function persistAndRender() {
@@ -84,6 +114,7 @@ function persistAndRender() {
       persistAndRender();
     }
   );
+  updateUrlInAddressBar();
 }
 
 const notionLink = document.getElementById('notion-link');
@@ -100,6 +131,7 @@ const nfaFilter = document.getElementById('nfaFilter');
 const search = document.getElementById('search');
 if (catFilter && nfaFilter && search) {
   syncCategoryOptions(catFilter, allGuns);
+  applyUrlToForm();
   initControls({
     catFilter,
     nfaFilter,
@@ -129,4 +161,6 @@ initAddItemForm({
 });
 
 syncCategoryDatalist(document.getElementById('add-cat-dl'), allGuns);
+initBackupControls(/** @type {HTMLInputElement} */ (document.getElementById('import-backup-file')));
+initShareLink();
 persistAndRender();

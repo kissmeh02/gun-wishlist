@@ -7,6 +7,9 @@ A static, client-only gun collection wishlist: browse by category, filter NFA an
 - **Notion link:** set `NOTION_DOCS_URL` in [`src/config.js`](src/config.js), then use the footer link to open your Notion page.
 - **Open Graph** `og:url` in `index.html` points at the project Pages URL; `npm run site:build` can still rewrite a placeholder if you use `OG_SITE_BASE_URL` in a fork.
 - **Tests:** `npm test`
+- **Backup (JSON):** use **Download backup** to save custom rows + checkmarks. **Import** replaces them (browser only, no cloud).
+- **Share a filtered view:** set category / NFA / search, then **Copy view link** — the URL encodes `?cat=&nfa=&q=` for bookmarks or Notion.
+- **Install / PWA:** `manifest.json` + `icon.svg` let some browsers “install” the site or set icon when bookmarked.
 
 ## Local
 
