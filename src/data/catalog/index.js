@@ -11,6 +11,7 @@ import { historicCollector } from './historic-collector.js';
 import { modernMilitaryStyle } from './modern-military-style.js';
 import { contemporaryPicks2026 } from './contemporary-picks-2026.js';
 import { militaryDutyReference } from './military-duty-reference.js';
+import { taranTacticalInnovations } from './taran-tactical-innovations.js';
 
 /** @type {import('../types.js').GunRow[]} */
 export const allCatalogRows = [
@@ -27,6 +28,7 @@ export const allCatalogRows = [
   ...modernMilitaryStyle,
   ...contemporaryPicks2026,
   ...militaryDutyReference,
+  ...taranTacticalInnovations,
 ];
 
 export {
@@ -43,4 +45,5 @@ export {
   modernMilitaryStyle,
   contemporaryPicks2026,
   militaryDutyReference,
+  taranTacticalInnovations,
 };
