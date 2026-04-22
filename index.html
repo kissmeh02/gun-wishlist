@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gun Collection Tracker</title>
+    <meta
+      name="description"
+      content="Texas build wishlist: track a firearms collection with categories, NFA flags, and local progress."
+    />
+    <link rel="stylesheet" href="styles/main.css" />
+    <meta property="og:title" content="Gun Collection Tracker" />
+    <meta
+      property="og:description"
+      content="Track your Texas build collection: handguns, rifles, shotguns, NFA items, and acquisition progress."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="OG_SITE_BASE_URL" />
+  </head>
+  <body>
+    <h1>Gun Collection — Texas Build</h1>
+    <div class="controls">
+      <select id="catFilter">
+        <option value="">All categories</option>
+      </select>
+      <select id="nfaFilter">
+        <option value="">All items</option>
+        <option value="nfa">NFA items only</option>
+        <option value="standard">Standard (no NFA)</option>
+      </select>
+      <input
+        id="search"
+        type="search"
+        placeholder="Search name or caliber..."
+        autocomplete="off"
+      />
+    </div>
+    <div class="stats" id="stats"></div>
+    <div style="overflow-x: auto">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 28px"></th>
+            <th>Name</th>
+            <th>Caliber</th>
+            <th>Tags</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="page-footer">
+      <a id="notion-link" href="#" rel="noopener noreferrer"
+        >Notion (set URL in src/config.js)</a
+      >
+    </p>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "gun-wishlist",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Client-side Texas build gun collection tracker (wishlist, NFA tags, local storage).",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "site:build": "node scripts/set-site-meta.mjs"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  }
+}
