@@ -4,8 +4,8 @@
   "description": "Texas build wishlist with categories, NFA flags, and local progress.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f0f0f",
-  "theme_color": "#0f0f0f",
+  "background_color": "#0c0c0e",
+  "theme_color": "#0c0c0e",
   "icons": [
     {
       "src": "icon.svg",

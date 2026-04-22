@@ -36,6 +36,7 @@ export function renderApp(
   for (const s of statSpec) {
     const card = document.createElement('div');
     card.className = 'stat';
+    card.setAttribute('role', 'listitem');
     const n = document.createElement('div');
     n.className = s.valClass ? `stat-val ${s.valClass}` : 'stat-val';
     n.textContent = String(s.val);
@@ -47,6 +48,19 @@ export function renderApp(
   }
 
   tbody.replaceChildren();
+  if (filtered.length === 0) {
+    const tr = document.createElement('tr');
+    tr.className = 'table-empty';
+    const td = document.createElement('td');
+    td.colSpan = 6;
+    td.className = 'table-empty-cell';
+    td.textContent =
+      'No items match these filters. Clear the search, set category to "All categories", or change the NFA filter.';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
   let lastCat = '';
   for (const g of filtered) {
     if (g.cat !== lastCat) {
@@ -64,6 +78,7 @@ export function renderApp(
     const td0 = document.createElement('td');
     const input = document.createElement('input');
     input.type = 'checkbox';
+    input.setAttribute('aria-label', `Acquired: ${g.n}`);
     if (acquired.has(rowKey)) input.checked = true;
     input.addEventListener('change', () => {
       onToggle(rowKey, input.checked);
@@ -74,11 +89,11 @@ export function renderApp(
     tdName.textContent = g.n;
 
     const tdCal = document.createElement('td');
-    tdCal.style.cssText = 'color:#888;white-space:nowrap';
+    tdCal.className = 'td-cal';
     tdCal.textContent = g.cal || '—';
 
     const tdTags = document.createElement('td');
-    tdTags.style.whiteSpace = 'nowrap';
+    tdTags.className = 'td-tags';
     if (g.nfa) tdTags.appendChild(makeBadge('NFA', 'b-nfa'));
     if (g.hist) tdTags.appendChild(makeBadge('Historic', 'b-hist'));
     if (g.mil) tdTags.appendChild(makeBadge('Military', 'b-mil'));
@@ -96,6 +111,7 @@ export function renderApp(
       btn.type = 'button';
       btn.className = 'btn-row-delete';
       btn.textContent = 'Remove';
+      btn.setAttribute('aria-label', `Remove custom item: ${g.n}`);
       btn.addEventListener('click', () => onDeleteCustom(g.id));
       tdAction.appendChild(btn);
     } else {
@@ -115,6 +131,5 @@ function makeBadge(text, className) {
   const s = document.createElement('span');
   s.className = `badge ${className}`;
   s.textContent = text;
-  s.style.marginRight = '3px';
   return s;
 }
