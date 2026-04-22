@@ -32,8 +32,14 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
       - name: Local HTTP 200 (smoke)
         run: |
-          npx --yes http-server _site -p 9999 -s &
-          sleep 2
+          python3 -m http.server 9999 --directory _site > /dev/null 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -sfS -o /dev/null "http://127.0.0.1:9999/"; then
+              break
+            fi
+            sleep 1
+            if [ "$i" -eq 30 ]; then echo "server did not start"; exit 1; fi
+          done
           code=$(curl -sS -o /dev/null -w "%{http_code}" "http://127.0.0.1:9999/")
           if [ "$code" != "200" ]; then echo "expected 200, got $code"; exit 1; fi
           echo "OK: root returns HTTP $code"
