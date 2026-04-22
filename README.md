@@ -19,9 +19,12 @@ npx --yes http-server -p 8080 .
 
 ## GitHub Pages
 
-The repository is **private**; a free plan often **cannot** enable GitHub Pages for private repositories (the API may return 422). Options: [upgrade the account](https://github.com/pricing) for private Pages, **make the repository public** to use free Pages, or host the `static-site` **workflow artifact** (from the “Site build and verify” action) on Netlify, Cloudflare Pages, or S3+CloudFront.
+The repository is **public**. The site deploys with **“Deploy GitHub Pages”** on each push to `main`:
 
-**Branch rules** and **auto-merge** may also require a paid tier while the repository stays private. Apply the same settings from **Settings → Branches** after upgrading or if you switch the repository to public.
+- **Live site:** <https://kissmeh02.github.io/gun-wishlist/>
+- In **Notion**, use an **Embed** or a bookmark with that URL (embed may take a few minutes after the first deploy to return 200).
+
+**Branch rules** and **auto-merge** can be set under **Settings → Branches** if you use pull requests; private-repo limits no longer apply to Pages.
 
 ## Security
 
