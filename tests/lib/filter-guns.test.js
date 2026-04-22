@@ -34,4 +34,12 @@ describe('filterGuns', () => {
     const r = filterGuns(sample, { category: '', nfa: '' }, 'gauge');
     expect(r).toHaveLength(1);
   });
+
+  it('should match search in optional fields on custom rows', () => {
+    const rows = [
+      { n: 'X', cal: '9', cat: 'H', targetPrice: '$500' },
+    ];
+    const r = filterGuns(/** @type {import('../../src/data/types.js').GunRow[]} */ (rows), { category: '', nfa: '' }, '500');
+    expect(r).toHaveLength(1);
+  });
 });

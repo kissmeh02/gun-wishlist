@@ -56,6 +56,9 @@ export function saveCustomGuns(rows) {
         hist: !!g.hist,
         mil: !!g.mil,
         note: g.note || '',
+        targetPrice: g.targetPrice || '',
+        purchaseDate: g.purchaseDate || '',
+        productUrl: g.productUrl || '',
         isCustom: true,
       })
     );

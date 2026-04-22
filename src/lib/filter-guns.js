@@ -15,12 +15,15 @@ export function filterGuns(guns, state, query) {
     if (state.category && g.cat !== state.category) return false;
     if (state.nfa === 'nfa' && !g.nfa) return false;
     if (state.nfa === 'standard' && g.nfa) return false;
-    if (
-      q &&
-      !g.n.toLowerCase().includes(q) &&
-      !(g.cal || '').toLowerCase().includes(q)
-    ) {
-      return false;
+    if (q) {
+      const n = g.n.toLowerCase();
+      const cal = (g.cal || '').toLowerCase();
+      const note = (g.note || '').toLowerCase();
+      const price = (g.targetPrice || '').toLowerCase();
+      const pdate = (g.purchaseDate || '').toLowerCase();
+      const url = (g.productUrl || '').toLowerCase();
+      const hay = `${n} ${cal} ${note} ${price} ${pdate} ${url}`;
+      if (!hay.includes(q)) return false;
     }
     return true;
   });

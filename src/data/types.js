@@ -9,6 +9,9 @@
  * @property {boolean} [mil]
  * @property {boolean} [isCustom] User-added from the form (stored in localStorage).
  * @property {string} [note]
+ * @property {string} [targetPrice] Optional, custom rows (e.g. "$1,200").
+ * @property {string} [purchaseDate] Optional, ISO or display string (custom).
+ * @property {string} [productUrl] Optional, https link (custom).
  */
 
 /**

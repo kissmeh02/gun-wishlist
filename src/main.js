@@ -1,5 +1,7 @@
 import { mergeStaticAndCustom } from './data/merge-guns.js';
 import { NOTION_DOCS_URL, CATALOG_REFRESH_DATE } from './config.js';
+import { getStoredTheme, applyTheme, initThemeToggle } from './lib/theme.js';
+import { initSearchHotkey } from './lib/search-focus.js';
 import { getRowKey } from './lib/gun-key.js';
 import { debounce } from './lib/debounce.js';
 import { readUrlFilterParams, isValidNfaParam, buildListUrl } from './lib/url-filters.js';
@@ -18,6 +20,8 @@ import { initAddItemForm, syncCategoryDatalist } from './ui/add-item-form.js';
 import { renderApp } from './ui/render-app.js';
 import { initBackupControls } from './ui/backup-controls.js';
 import { initShareLink } from './ui/share-link.js';
+
+applyTheme(getStoredTheme());
 
 let customGuns = loadCustomGuns();
 let allGuns = mergeStaticAndCustom(customGuns);
@@ -142,7 +146,7 @@ if (catFilter && nfaFilter && search) {
 
 initAddItemForm({
   form: document.getElementById('add-gun-form'),
-  onAdd: ({ n, cal, cat, nfa, mil, note }) => {
+  onAdd: ({ n, cal, cat, nfa, mil, note, targetPrice, purchaseDate, productUrl }) => {
     const row = /** @type {import('./data/types.js').GunRow} */ ({
       id: newCustomId(),
       n,
@@ -152,6 +156,9 @@ initAddItemForm({
       mil,
       hist: false,
       note: note || '',
+      targetPrice: targetPrice || '',
+      purchaseDate: purchaseDate || '',
+      productUrl: productUrl || '',
       isCustom: true,
     });
     customGuns = [...customGuns, row];
@@ -163,4 +170,6 @@ initAddItemForm({
 syncCategoryDatalist(document.getElementById('add-cat-dl'), allGuns);
 initBackupControls(/** @type {HTMLInputElement} */ (document.getElementById('import-backup-file')));
 initShareLink();
+initThemeToggle();
+initSearchHotkey();
 persistAndRender();

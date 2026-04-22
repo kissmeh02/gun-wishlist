@@ -2,6 +2,16 @@ import { getRowKey } from '../lib/gun-key.js';
 import { filterGuns } from '../lib/filter-guns.js';
 import { buildStatsModel } from '../lib/build-stats.js';
 
+const COLS = 9;
+
+/**
+ * @param {HTMLElement} el
+ * @param {string} text
+ */
+function setLabel(el, text) {
+  el.setAttribute('data-label', text);
+}
+
 /**
  * @param {import('../data/types.js').GunRow[]} allGuns
  * @param {import('../data/types.js').FilterState} filterState
@@ -52,7 +62,7 @@ export function renderApp(
     const tr = document.createElement('tr');
     tr.className = 'table-empty';
     const td = document.createElement('td');
-    td.colSpan = 6;
+    td.colSpan = COLS;
     td.className = 'table-empty-cell';
     td.textContent =
       'No items match these filters. Clear the search, set category to "All categories", or change the NFA filter.';
@@ -67,7 +77,7 @@ export function renderApp(
       const hr = document.createElement('tr');
       hr.className = 'cat-head';
       const td = document.createElement('td');
-      td.colSpan = 6;
+      td.colSpan = COLS;
       td.textContent = g.cat;
       hr.appendChild(td);
       tbody.appendChild(hr);
@@ -75,7 +85,10 @@ export function renderApp(
     }
     const rowKey = getRowKey(g);
     const tr = document.createElement('tr');
+
     const td0 = document.createElement('td');
+    td0.className = 'td-check';
+    setLabel(td0, 'Acquired');
     const input = document.createElement('input');
     input.type = 'checkbox';
     input.setAttribute('aria-label', `Acquired: ${g.n}`);
@@ -86,26 +99,61 @@ export function renderApp(
     td0.appendChild(input);
 
     const tdName = document.createElement('td');
+    tdName.className = 'td-name';
+    setLabel(tdName, 'Name');
     tdName.textContent = g.n;
 
     const tdCal = document.createElement('td');
     tdCal.className = 'td-cal';
+    setLabel(tdCal, 'Caliber');
     tdCal.textContent = g.cal || '—';
 
     const tdTags = document.createElement('td');
     tdTags.className = 'td-tags';
+    setLabel(tdTags, 'Tags');
     if (g.nfa) tdTags.appendChild(makeBadge('NFA', 'b-nfa'));
     if (g.hist) tdTags.appendChild(makeBadge('Historic', 'b-hist'));
     if (g.mil) tdTags.appendChild(makeBadge('Military', 'b-mil'));
     if (g.isCustom) tdTags.appendChild(makeBadge('Custom', 'b-custom'));
     if (acquired.has(rowKey)) tdTags.appendChild(makeBadge('Acquired', 'b-got'));
 
+    const tdPrice = document.createElement('td');
+    tdPrice.className = 'td-price td-num';
+    setLabel(tdPrice, 'Price');
+    const priceStr = (g.targetPrice && String(g.targetPrice).trim()) || '';
+    tdPrice.textContent = priceStr || '—';
+
+    const tdDate = document.createElement('td');
+    tdDate.className = 'td-pdate';
+    setLabel(tdDate, 'Date');
+    const dStr = (g.purchaseDate && String(g.purchaseDate).trim()) || '';
+    tdDate.textContent = dStr || '—';
+
+    const tdLink = document.createElement('td');
+    tdLink.className = 'td-link';
+    setLabel(tdLink, 'Link');
+    const u = (g.productUrl && String(g.productUrl).trim()) || '';
+    if (u && /^https?:\/\//i.test(u)) {
+      const a = document.createElement('a');
+      a.href = u;
+      a.textContent = 'Link';
+      a.className = 'link-out';
+      a.rel = 'noopener noreferrer';
+      a.target = '_blank';
+      a.title = u;
+      tdLink.appendChild(a);
+    } else {
+      tdLink.textContent = u || '—';
+    }
+
     const tdNote = document.createElement('td');
     tdNote.className = 'note';
+    setLabel(tdNote, 'Notes');
     tdNote.textContent = g.note || '';
 
     const tdAction = document.createElement('td');
     tdAction.className = 'td-action';
+    setLabel(tdAction, 'Action');
     if (g.isCustom && g.id && onDeleteCustom) {
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -118,7 +166,17 @@ export function renderApp(
       tdAction.appendChild(document.createTextNode(''));
     }
 
-    tr.append(td0, tdName, tdCal, tdTags, tdNote, tdAction);
+    tr.append(
+      td0,
+      tdName,
+      tdCal,
+      tdTags,
+      tdPrice,
+      tdDate,
+      tdLink,
+      tdNote,
+      tdAction
+    );
     tbody.appendChild(tr);
   }
 }

@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script>
+      try {
+        var t = localStorage.getItem('gunWishlistTheme') || 'dark';
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      } catch (e) {}
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Gun Collection Tracker</title>
@@ -24,15 +30,28 @@
     />
   </head>
   <body>
-    <a class="skip-link" href="#browse">Skip to list</a>
+    <a class="skip-link print-hidden" href="#browse">Skip to list</a>
 
     <div class="app">
-      <header class="app-header">
-        <h1 class="app-title">Gun Collection — Texas Build</h1>
-        <p class="subhead" id="catalog-dates"></p>
+      <header class="app-header print-header">
+        <div class="app-header__top">
+          <h1 class="app-title">Gun Collection — Texas Build</h1>
+          <button
+            type="button"
+            id="theme-toggle"
+            class="btn-ghost btn-theme"
+            aria-label="Toggle color theme"
+          >
+            Light mode
+          </button>
+        </div>
+        <p class="subhead print-hidden" id="catalog-dates"></p>
+        <p class="kbd-hint print-hidden" title="When not typing in a field">
+          Press <kbd>/</kbd> to focus search
+        </p>
       </header>
 
-      <details class="panel panel--add" open>
+      <details class="panel panel--add print-hidden" open>
         <summary class="panel__summary">
           <span class="panel__summary-text">Add a wishlist item</span>
           <span class="panel__summary-hint"
@@ -47,7 +66,7 @@
                 <input name="n" type="text" required maxlength="200" placeholder="e.g. CZ P-10 C" />
               </label>
             </div>
-            <div class="add-gun-row add-gun-grid">
+            <div class="add-gun-row add-gun-grid add-gun-grid--2">
               <label class="add-label"
                 >Caliber
                 <input name="cal" type="text" maxlength="80" placeholder="9mm" />
@@ -64,9 +83,29 @@
               </label>
             </div>
             <datalist id="add-cat-dl"></datalist>
+            <p class="add-gun-optional-hint">Optional (custom items)</p>
+            <div class="add-gun-row add-gun-grid add-gun-grid--3">
+              <label class="add-label"
+                >Target price
+                <input name="targetPrice" type="text" maxlength="40" placeholder="$1,200" />
+              </label>
+              <label class="add-label"
+                >Purchase / target date
+                <input name="purchaseDate" type="date" />
+              </label>
+              <label class="add-label"
+                >Product link
+                <input
+                  name="productUrl"
+                  type="url"
+                  inputmode="url"
+                  maxlength="500"
+                  placeholder="https://…"
+                />
+              </label>
+            </div>
             <div class="add-gun-row add-checks">
-              <label
-                class="add-check"
+              <label class="add-check"
                 ><input name="nfa" type="checkbox" />
                 <span>NFA (suppressor, SBR, etc.)</span></label
               >
@@ -94,10 +133,11 @@
       </details>
 
       <section class="panel panel--browse" id="browse" tabindex="-1">
-        <h2 class="section-title">Browse &amp; filter</h2>
-        <p class="section-lead">Filter the list, search, and mark what you have acquired.</p>
+        <h2 class="section-title print-only-title">Collection list</h2>
+        <h2 class="section-title screen-only">Browse &amp; filter</h2>
+        <p class="section-lead print-hidden">Filter the list, search, and mark what you have acquired.</p>
 
-        <div class="control-row">
+        <div class="control-row print-hidden">
           <div class="control-group">
             <label class="field-label" for="catFilter">Category</label>
             <select id="catFilter" aria-label="Filter by category">
@@ -117,14 +157,14 @@
             <input
               id="search"
               type="search"
-              placeholder="Name or caliber…"
+              placeholder="Name, caliber, notes, price…"
               autocomplete="off"
               aria-label="Search"
             />
           </div>
         </div>
 
-        <div class="tools" role="group" aria-label="Backup and link tools">
+        <div class="tools print-hidden" role="group" aria-label="Backup and link tools">
           <div class="tools-buttons">
             <button type="button" id="copy-view-link" class="btn-ghost">Copy view link</button>
             <span class="copy-feedback" id="copy-feedback" role="status" aria-live="polite"></span>
@@ -143,10 +183,21 @@
           </p>
         </div>
 
-        <div class="stats" id="stats" role="list"></div>
+        <div class="stats print-stats" id="stats" role="list"></div>
 
         <div class="table-wrap">
           <table class="data-table">
+            <colgroup>
+              <col class="col-check" />
+              <col class="col-name" />
+              <col class="col-cal" />
+              <col class="col-tags" />
+              <col class="col-price" />
+              <col class="col-date" />
+              <col class="col-link" />
+              <col class="col-note" />
+              <col class="col-action" />
+            </colgroup>
             <thead>
               <tr>
                 <th
@@ -160,6 +211,9 @@
                 <th scope="col">Name</th>
                 <th scope="col">Caliber</th>
                 <th scope="col">Tags</th>
+                <th class="th-num" scope="col">Price</th>
+                <th class="th-date" scope="col">Date</th>
+                <th scope="col">Link</th>
                 <th scope="col">Notes</th>
                 <th class="th-action" scope="col">
                   <span class="visually-hidden">Actions</span>
@@ -171,7 +225,7 @@
         </div>
       </section>
 
-      <footer class="app-footer page-footer">
+      <footer class="app-footer page-footer print-hidden">
         <a id="notion-link" href="#" rel="noopener noreferrer"
           >Notion (set URL in src/config.js)</a
         >
